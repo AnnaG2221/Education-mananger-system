@@ -1,25 +1,40 @@
-import logo from './logo.svg';
-import './App.css';
+import React, { Component} from 'react'
+import {BrowserRouter as Router,Switch,Route,Redirect} from "react-router-dom"
+import "./App.css";
+import Home from "./views/Layout/Index"
+import Login from "./views/Login/Index"
+import { authLogin } from './utils/auth';
+export default class App extends Component {
+  render() {
+    return (
+      <div>
+        <Router>
+          <Switch>
+            <Route path="/" exact render={(props)=>{
+              return <Redirect to="/index"></Redirect>
+            }}></Route>
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+            <Route path="/index" render={(props)=>{
+              //如果没有登陆，就进入到登陆页，如果登陆了就进首页
+              if(!authLogin()){
+              
+                return <Redirect to="/login"></Redirect>
+               // return <Login  {...props}></Login>
+              }
+              return <Home {...props}></Home>
+            }}></Route>
+            
+            <Route path="/login" render={(props)=>{
+                 //如果登陆了
+                if(authLogin()){
+                  return <Redirect to="/index/home"></Redirect>
+                }
+              
+                return <Login {...props}></Login>
+            }}></Route>
+          </Switch>
+        </Router>
+      </div>
+    )
+  }
 }
-
-export default App;

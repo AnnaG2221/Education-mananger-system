@@ -3,11 +3,19 @@ import ReactDOM from 'react-dom';
 import './index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
-
+import store from "./redux/store";
+import {Provider} from "react-redux";
+import { ConfigProvider } from 'antd';
+import zhCN from 'antd/lib/locale/zh_CN';
 ReactDOM.render(
-  <React.StrictMode>
-    <App />
-  </React.StrictMode>,
+  <ConfigProvider locale={zhCN}>
+      <Provider store={store}>
+          <App />
+      </Provider>
+  </ConfigProvider>
+   
+    
+,
   document.getElementById('root')
 );
 
